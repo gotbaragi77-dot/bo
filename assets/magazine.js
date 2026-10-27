@@ -45,7 +45,18 @@ function setupMagazine(){
 
   }
   async function downloadMagazine(id){const p=capturedMagazines.find(x=>x.id===id);if(!p)return;if(p.pdf){const link=document.createElement('a');link.href=p.pdf;link.download=p.company+'_'+p.month+'.pdf';document.body.append(link);link.click();link.remove();return}alert('이 소식지의 원본 PDF 파일은 아직 등록되지 않았습니다. 원본 PDF가 등록되면 여기에서 다운로드할 수 있습니다.');}
-  async function shareMagazine(id){const p=capturedMagazines.find(x=>x.id===id);if(!p)return;const url=location.origin+location.pathname+'#/magazines?mag='+encodeURIComponent(id);const title=p.company+' · '+p.title;try{if(window.Kakao?.isInitialized?.()){window.Kakao.Share.sendDefault({objectType:'feed',content:{title,description:'INSTORY 보험 소식지',imageUrl:new URL(magazineImg(p),location.href).href,link:{mobileWebUrl:url,webUrl:url}}});return}if(navigator.share){await navigator.share({title,text:title,url});return}await navigator.clipboard.writeText(url);alert('공유 링크가 복사되었습니다. 카카오톡에 붙여넣어 공유하세요.')}catch(e){if(e.name!=='AbortError')alert('공유에 실패했습니다. 다시 시도해 주세요.')}}
+  async function shareMagazine(id){
+   const p=[...capturedMagazines,...(window.instoryMagazineRecords||[])].find(x=>String(x.id)===String(id));
+   if(!p)return;
+   let summary=[p.month,p.company,'보험 소식지 상세 내용을 확인하세요.'].filter(Boolean).join(' · ');
+   if(/^[a-f0-9-]{36}$/.test(String(id))){
+    try{
+     const response=await fetch('https://instory-content-api.porom.workers.dev/api/posts/'+encodeURIComponent(id));
+     if(response.ok){const post=await response.json();const plain=document.createElement('div');plain.innerHTML=post.content_html||'';summary=(plain.textContent||summary).replace(/\s+/g,' ').trim().slice(0,300)}
+    }catch(error){console.warn('공유 본문 조회 실패',error)}
+   }
+   window.instoryShareKakao?.({title:p.title,summary,url:location.origin+location.pathname+'#/magazine/'+encodeURIComponent(id)});
+  }
   function show(index){if(!visible.length)return;current=(index+visible.length)%visible.length;const p=visible[current];document.getElementById('mag-large').src=magazineImg(p);document.getElementById('mag-large').alt=p.company+' '+p.title+' 표지';document.getElementById('mag-caption').textContent=p.company+' · '+p.title+(p.complete?'':' · 표지 일부만 확보');overlay.hidden=false;document.body.style.overflow='hidden';document.getElementById('mag-close').focus()}
   function close(){overlay.hidden=true;document.body.style.overflow='';if(lastFocused?.isConnected)lastFocused.focus()}
   document.getElementById('mag-pagination').addEventListener('click',e=>{const b=e.target.closest('[data-mag-page]');if(!b)return;magPage=Number(b.dataset.magPage);update()});search.addEventListener('input',()=>{magPage=1;update()});groups.addEventListener('click',e=>{const btn=e.target.closest('[data-group]');if(!btn)return;group=btn.dataset.group;magPage=1;groups.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));update()});
@@ -69,7 +80,7 @@ function magazineDetail(id){
  '<main class="shell mag-detail"><div class="mag-detail-header"><a href="#/magazines" class="mag-detail-back">‹ 목록으로</a><span class="mag-detail-month">'+magazineEsc(p.month)+'</span></div><h2>'+magazineEsc(p.title)+'</h2><p class="mag-detail-company">'+magazineEsc(p.company)+'</p>'+
  '<section id="mag-detail-content" class="mag-detail-body">'+(hasCover?'<img class="mag-detail-cover" src="'+magazineEsc(magazineImg(p))+'" alt="'+magazineEsc(p.title)+' 표지">':'')+
  (isLive?'<p class="mag-detail-loading">등록된 상세 내용을 불러오는 중입니다.</p>':'<p class="mag-detail-note">소식지 표지 미리보기입니다. 원문이 등록되면 이곳에 표시됩니다.</p>')+'</section>'+
- '<div class="mag-detail-actions">'+(pdf?'<a href="'+magazineEsc(pdf)+'" target="_blank" rel="noopener">PDF 다운로드 ↓</a>':'')+'<a href="#/magazines">목록</a></div></main>';
+ '<div class="mag-detail-actions"><button type="button" class="mag-share" data-mag-detail-share="'+magazineEsc(String(id))+'">카카오톡 공유</button>'+(pdf?'<a href="'+magazineEsc(pdf)+'" target="_blank" rel="noopener">PDF 다운로드 ↓</a>':'')+'<a href="#/magazines">목록</a></div></main>';
 }
 async function loadMagazineDetail(id){
  if(!/^[a-f0-9-]{36}$/.test(String(id)))return;
@@ -86,3 +97,13 @@ async function loadMagazineDetail(id){
  if(post.pdf_key){const actions=document.querySelector('.mag-detail-actions');if(actions&&!actions.querySelector('[download]')){const link=document.createElement('a');link.href='https://instory-content-api.porom.workers.dev/api/files/'+encodeURIComponent(post.pdf_key);link.textContent='PDF 다운로드 ↓';link.setAttribute('download','');actions.prepend(link)}}
  }catch(e){host.querySelector('.mag-detail-loading')?.replaceWith(document.createTextNode('상세 내용을 불러오지 못했습니다.'))}
 }
+
+document.addEventListener('click',event=>{
+ const button=event.target.closest('[data-mag-detail-share]');
+ if(!button)return;
+ const id=button.dataset.magDetailShare;
+ const p=[...capturedMagazines,...(window.instoryMagazineRecords||[])].find(x=>String(x.id)===String(id));
+ if(!p)return;
+ const content=document.querySelector('.mag-detail-body')?.innerText||'';
+ window.instoryShareKakao?.({title:p.title,summary:content.trim()||[p.company,p.month,'보험 소식지'].join(' · '),url:location.origin+location.pathname+'#/magazine/'+encodeURIComponent(id)});
+});
