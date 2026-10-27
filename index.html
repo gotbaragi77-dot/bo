@@ -1124,7 +1124,7 @@ function showInsurerDetail(name,tab=0){
      anchor.innerHTML=pdfIcon+'<span>PDF 다운로드</span>';
      anchor.target='_blank';anchor.rel='noopener noreferrer';
    }else{
-     action.innerHTML='<span class="insurer-pdf-button" aria-disabled="true" title="원본 다운로드 주소 연결 필요">'+pdfIcon+'<span>PDF 링크 확인 중</span></span>';
+     action.remove();
    }
  });
  overlay.dataset.name=name;document.body.style.overflow='hidden';
