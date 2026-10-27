@@ -1141,7 +1141,7 @@ function showInsurerDetail(name,tab=0){
    const anchor=action.querySelector('a[href]:not([href="#"])');
    if(anchor){
      anchor.classList.add('insurer-pdf-button');
-     anchor.innerHTML=pdfIcon+'<span>PDF 다운로드</span>';
+     anchor.innerHTML=pdfIcon+'<span>자료 다운로드</span>';
      anchor.target='_blank';anchor.rel='noopener noreferrer';
    }else{
      action.remove();
