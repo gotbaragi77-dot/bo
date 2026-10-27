@@ -1076,6 +1076,58 @@ main.content > .home-mag-section + .directory-section{margin-top:0!important}
  .mast .header-search input{min-width:0!important}
  .mast + #app{clear:both}
 }
+
+/* Responsive audit: layout, reading width, image crop and overlays. */
+html,body{max-width:100%;overflow-x:clip}
+@media(max-width:900px){
+ .shell{max-width:100%;min-width:0}
+ .home-quick-section .routes{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .home-quick-section .route{min-width:0}
+ .home-mag-viewport{max-width:100%}
+ .insurer-dialog{max-width:100%}
+}
+@media(max-width:650px){
+ .utility .shell{height:auto!important;min-height:46px;gap:10px}
+ .utility-links{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;width:100%}
+ .utility-links a{white-space:nowrap}
+ .mast{position:relative!important;z-index:20!important;background:#fff!important}
+ .mast .brand{min-width:0;max-width:calc(100% - 66px)}
+ .mast .brand img{max-width:100%;height:auto}
+ .mast .nav{order:4!important;flex-basis:100%;width:100%;max-width:100%;margin-top:10px}
+ .mast .nav.open{display:flex!important}
+ .hero{height:auto!important;min-height:560px!important;background-position:60% center!important;background-size:cover!important}
+ .hero{background-image:linear-gradient(90deg,rgba(7,15,25,.82) 0%,rgba(8,17,28,.58) 100%),var(--instory-mobile-hero,url("assets/main.png"))!important}
+ .hero .hero-inner{height:auto!important;min-height:560px!important;display:flex!important;align-items:flex-start!important;padding-top:76px!important;padding-bottom:64px!important}
+ .hero .hero-inner>div:first-child{max-width:100%!important}
+ .hero h1{font-size:clamp(27px,7.2vw,39px)!important;line-height:1.3!important;word-break:keep-all}
+ .hero p{font-size:13px!important;line-height:1.8!important;word-break:keep-all}
+ .hero .eyebrow{font-size:10px!important;letter-spacing:.08em!important}
+ .home-quick-section .routes{grid-template-columns:1fr!important;gap:12px!important}
+ .home-quick-section .route{min-height:100px!important}
+ .home-quick-heading{align-items:flex-start!important}
+ .home-quick-heading .section-desc{flex-basis:100%}
+ main.content:has(> .home-quick-section){padding-top:60px!important}
+ main.content > .home-quick-section,main.content > .home-mag-section{margin-bottom:60px!important}
+ .section-heading{gap:10px;flex-wrap:wrap}
+ .home-mag-section .home-mag-month{display:inline-block;margin-top:4px}
+ .insurer-dialog-overlay{padding:8px!important;align-items:center}
+ .insurer-dialog{max-height:calc(100dvh - 16px)!important;max-width:100%!important;border-radius:7px}
+ .insurer-dialog-header{padding:22px 42px 18px 20px!important;gap:10px}
+ .insurer-dialog-close{right:13px!important;top:12px!important}
+ .insurer-dialog-actions{gap:7px!important;flex-wrap:wrap}
+ .insurer-dialog-tabs{overflow-x:auto!important;flex-wrap:nowrap!important;white-space:nowrap;scrollbar-width:thin;overscroll-behavior-inline:contain}
+ .insurer-dialog-tabs button{flex-shrink:0}
+ .insurer-dialog-body{padding:20px!important;overflow-x:auto}
+ .insurer-dialog-body .nm-grid{grid-template-columns:1fr!important}
+ .insurer-dialog-body .new-info-table{font-size:11px!important}
+ .insurer-dialog-body .new-info-table td,.insurer-dialog-body .new-info-table th{padding:10px 8px!important}
+}
+@media(max-width:390px){
+ .hero h1{font-size:26px!important}
+ .utility-links a{font-size:10px!important}
+ .insurer-dialog-actions>a,.insurer-dialog-actions>button{font-size:11px!important;padding:7px 9px!important}
+ .insurer-dialog-body{padding:14px!important}
+}
 </style><script defer src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.6/kakao.min.js"></script></head><body><div class="utility"><div class="shell"><span class="utility-brand">보험 전문가를 위한 정보 아카이브</span><nav class="utility-links" aria-label="업무 편의 바로가기"><a href="#/bookmark" class="utility-shortcut"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>보험북마크</span></a><a href="#/interest" class="utility-shortcut"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h2m4 0h2M8 15h2m4 0h2M8 19h2m4 0h2"/></svg><span>이자 계산기</span></a><a href="#/qa" class="utility-shortcut"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-11.8 7.8L3 21l1.7-6.2A8.5 8.5 0 1 1 21 11.5z"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4"/><path d="M12 16h.01"/></svg><span>질문과 답변</span></a></nav></div></div><header class="shell mast"><a href="/" class="brand" aria-label="INSTORY 메인 페이지"><img class="instory-logo-img" src="assets/logo.png" alt="INSTORY"><small>INSURANCE WORK COMMUNITY</small></a><nav class="nav" id="nav" aria-label="주 메뉴"><a href="#/magazines">월별 소식지</a><a href="#/insurance-news">오늘의 보험소식</a><a href="#/finance">오늘의 재테크상식</a><a href="#/current">오늘의 시사상식</a><div class="nav-dropdown"><button type="button" class="nav-dropdown-toggle" id="library-menu-button" aria-expanded="false" aria-controls="library-submenu" aria-haspopup="true">자료실<svg class="nav-chevron" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 6 4.5 4 4.5-4"/></svg></button><div class="nav-dropdown-menu" id="library-submenu" aria-label="자료실 하위 메뉴"><a href="#/products">상품정보</a><a href="#/needs">보험니즈자료</a><a href="#/main-links">메인모듬링크</a><a href="#/bookmark">보험북마크</a><a href="#/interest">이자 계산기</a></div></div></nav><form id="search" class="header-search" role="search"><input name="q" type="search" aria-label="통합 검색" placeholder="자료 검색" required><button type="submit" aria-label="검색">검색</button></form><button class="menu" id="menu" aria-label="메뉴 열기" aria-expanded="false">☰</button></header><div id="app"></div><footer class="site-footer" id="site-footer"><div class="shell"><div class="footer-main"><div class="footer-intro"><a href="#/" class="footer-wordmark footer-logo-image" aria-label="INSTORY 홈"><img src="assets/logo.png" alt="INSTORY" loading="lazy"></a><div class="footer-business"><p><strong>상호</strong> 인스토리 <span class="footer-sep">|</span> <strong>대표자</strong> 노주영 <span class="footer-sep">|</span> <strong>사업자등록번호</strong> 584-38-00821</p><p><strong>주소</strong> 서울특별시 성동구 아차산로17길 49, 319, 320호 (성수동2가, 생각공장 데시앙플렉스)</p><p class="footer-contact-line"><strong>이메일</strong> <a href="mailto:turpboy@naver.com">turpboy@naver.com</a><span class="footer-copyright">Copyright © <a href="https://instory-content-api.porom.workers.dev/manager" aria-label="INSTORY 관리자 로그인" title="관리자 로그인">INSTORY</a>. All rights reserved.</span></p></div></div><div class="footer-navigation"><div class="footer-nav-col"><h3>INSURANCE</h3><a href="#/products">상품정보 <span aria-hidden="true">↗</span></a><a href="#/needs">보험니즈자료 <span aria-hidden="true">↗</span></a><a href="#/bookmark">보험북마크 <span aria-hidden="true">↗</span></a></div><div class="footer-nav-col"><h3>INSIGHTS</h3><a href="#/insurance-news">오늘의 보험소식 <span aria-hidden="true">↗</span></a><a href="#/finance">오늘의 재테크상식 <span aria-hidden="true">↗</span></a><a href="#/current">오늘의 시사상식 <span aria-hidden="true">↗</span></a></div></div><a href="#/" class="footer-top" aria-label="페이지 상단으로 이동"><span aria-hidden="true">↑</span><span>TOP</span></a></div></div></footer>
 <script src="assets/magazine.js"></script><script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
