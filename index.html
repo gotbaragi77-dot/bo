@@ -1163,10 +1163,10 @@ document.addEventListener('click',async e=>{
    const activeTab=overlay?.querySelector('[data-insurer-tab][aria-selected="true"]');
    const tabIndex=Math.max(0,Number(activeTab?.dataset.insurerTab||0));
    const tabTitle=insurerTabs[tabIndex];
-   const contents=(overlay?.querySelector('.insurer-dialog-body')?.innerText||'').replace(/\\s+/g,' ').trim();
+   const contents=(overlay?.querySelector('.insurer-dialog-body')?.innerText||'').replace(/\s+/g,' ').trim();
    const summary=contents.slice(0,220)+(contents.length>220?'…':'');
    const url=location.origin+location.pathname+'#/bookmark?insurer='+encodeURIComponent(name)+'&tab='+tabIndex;
-   const message=[name+' 보험사 업무정보',tabTitle,summary].filter(Boolean).join('\\n\\n');
+   const message=[name+' 보험사 업무정보',tabTitle,summary].filter(Boolean).join('\n\n');
    try{
      if(!Kakao.isInitialized())Kakao.init(key);
      Kakao.Share.sendDefault({objectType:'text',text:message,link:{mobileWebUrl:url,webUrl:url},buttonTitle:'상세보기'});
