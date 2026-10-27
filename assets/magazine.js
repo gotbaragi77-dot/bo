@@ -45,16 +45,10 @@ function setupMagazine(){
 
   }
   async function downloadMagazine(id){const p=capturedMagazines.find(x=>x.id===id);if(!p)return;if(p.pdf){const link=document.createElement('a');link.href=p.pdf;link.download=p.company+'_'+p.month+'.pdf';document.body.append(link);link.click();link.remove();return}alert('이 소식지의 원본 PDF 파일은 아직 등록되지 않았습니다. 원본 PDF가 등록되면 여기에서 다운로드할 수 있습니다.');}
-  async function shareMagazine(id){
+  function shareMagazine(id){
    const p=[...capturedMagazines,...(window.instoryMagazineRecords||[])].find(x=>String(x.id)===String(id));
    if(!p)return;
-   let summary=[p.month,p.company,'보험 소식지 상세 내용을 확인하세요.'].filter(Boolean).join(' · ');
-   if(/^[a-f0-9-]{36}$/.test(String(id))){
-    try{
-     const response=await fetch('https://instory-content-api.porom.workers.dev/api/posts/'+encodeURIComponent(id));
-     if(response.ok){const post=await response.json();const plain=document.createElement('div');plain.innerHTML=post.content_html||'';summary=(plain.textContent||summary).replace(/\s+/g,' ').trim().slice(0,300)}
-    }catch(error){console.warn('공유 본문 조회 실패',error)}
-   }
+   const summary=[p.summary||p.description||'',p.month,p.company].filter(Boolean).join(' · ');
    window.instoryShareKakao?.({title:p.title,summary,url:location.origin+location.pathname+'#/magazine/'+encodeURIComponent(id)});
   }
   function show(index){if(!visible.length)return;current=(index+visible.length)%visible.length;const p=visible[current];document.getElementById('mag-large').src=magazineImg(p);document.getElementById('mag-large').alt=p.company+' '+p.title+' 표지';document.getElementById('mag-caption').textContent=p.company+' · '+p.title+(p.complete?'':' · 표지 일부만 확보');overlay.hidden=false;document.body.style.overflow='hidden';document.getElementById('mag-close').focus()}
